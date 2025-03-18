@@ -1,6 +1,7 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button.tsx";
 import { RefreshCw } from "lucide-react";
+import { useGeolocation } from "@/hooks/use-geolocation.tsx";
 
 const WeatherDashboard = () => {
     const [isRotating, setIsRotating] = useState(false);
@@ -8,10 +9,18 @@ const WeatherDashboard = () => {
     const handleRefresh = () => {
         setIsRotating(true);
         setTimeout(() => setIsRotating(false), 500); // Reset animation after 0.5s
+        getLocation(); // Fetch location on refresh
     };
 
-    //custom hook for fetching location
+    // Custom hook for fetching location
+    const { coordinates, error, isLoading, getLocation } = useGeolocation();
 
+    // Log coordinates only after they are updated
+    useEffect(() => {
+        if (!isLoading && coordinates) {
+            console.log("Coordinates:", coordinates);
+        }
+    }, [coordinates, isLoading]);
 
     return (
         <div>
@@ -25,6 +34,17 @@ const WeatherDashboard = () => {
                         }`}
                     />
                 </Button>
+            </div>
+
+            {/* Show location or error */}
+            <div>
+                {isLoading ? (
+                    <p>Fetching location...</p>
+                ) : error ? (
+                    <p className="text-red-500">{error}</p>
+                ) : coordinates ? (
+                    <p>Latitude: {coordinates.latitude}, Longitude: {coordinates.longitude}</p>
+                ) : null}
             </div>
 
             {/* Current and Hourly Weather */}
