@@ -6,7 +6,18 @@ import {CityPage} from "@/pages/city-page.tsx";
 import { QueryClientProvider, QueryClient } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 
-const queryClient = new QueryClient();
+//tanstack stuff
+//set a limit for "fresh" data to avoid excess api calls
+const queryClient = new QueryClient({
+    defaultOptions:{
+        queries: {
+            staleTime: 5 * 60 * 1000, //5 minutes
+            gcTime: 10 *60 * 1000, //10 minutes - garbage collection - cache time
+            retry: false,
+            refetchOnWindowFocus: false,
+        }
+    }
+});
 
 const App = () => {
     return (
