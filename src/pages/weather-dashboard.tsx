@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
-import { Button } from "@/components/ui/button.tsx";
+import { Button } from "@/components/ui/button";
 import { MapPin, RefreshCw, AlertCircle } from "lucide-react";
-import { useGeolocation } from "@/hooks/use-geolocation.tsx";
+import { useGeolocation } from "@/hooks/use-geolocation";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import WeatherSkeleton from "@/components/skeleton";
+import { useReverseGeocodeQuery } from "@/hooks/use-weather";
 
 const WeatherDashboard = () => {
     const { coordinates, locationError, locationLoading, getLocation } = useGeolocation();
@@ -15,6 +16,9 @@ const WeatherDashboard = () => {
             console.log("Coordinates:", coordinates);
         }
     }, [coordinates, locationLoading]);
+
+    const locationQuery = useReverseGeocodeQuery(coordinates);
+    console.log(locationQuery);
 
     const handleRefresh = () => {
         setIsRotating(true);
@@ -54,7 +58,7 @@ const WeatherDashboard = () => {
 
             {/* Show location */}
             {coordinates ? (
-                <p>Latitude: {coordinates.latitude}, Longitude: {coordinates.longitude}</p>
+                <p>Latitude: {coordinates.lat}, Longitude: {coordinates.lon}</p>
             ) : (
                 <p>Fetching location...</p>
             )}

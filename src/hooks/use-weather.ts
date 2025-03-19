@@ -13,7 +13,7 @@ export function useWeatherQuery(coordinates: Coordinates | null) {
         //tanstack stuff
         // if the weather data for a location has been fetched within the last x minutes
         // there shouldn't be a new api call for that location
-        queryKey: weather_keys.weather(coordinates ?? { latitude: 0, longitude: 0 }),
+        queryKey: weather_keys.weather(coordinates ?? { lat: 0, lon: 0 }),
         queryFn: () =>
             coordinates ? weatherApi.getCurrentWeather(coordinates) : null,
         enabled: !!coordinates,
@@ -26,7 +26,7 @@ export function useForeCastQuery(coordinates: Coordinates | null) {
         //tanstack stuff
         // if the weather data for a location has been fetched within the last x minutes
         // there shouldn't be a new api call for that location
-        queryKey: weather_keys.forecast(coordinates ?? { latitude: 0, longitude: 0 }),
+        queryKey: weather_keys.forecast(coordinates ?? { lat: 0, lon: 0 }),
         queryFn: () =>
             coordinates ? weatherApi.getForecast(coordinates) : null,
         enabled: !!coordinates,
@@ -39,7 +39,7 @@ export function useReverseGeocodeQuery(coordinates: Coordinates | null) {
         //tanstack stuff
         // if the weather data for a location has been fetched within the last x minutes
         // there shouldn't be a new api call for that location
-        queryKey: weather_keys.reverseGeocode(coordinates ?? { latitude: 0, longitude: 0 }),
+        queryKey: weather_keys.reverseGeocode(coordinates ?? { lat: 0, lon: 0 }),
         queryFn: () =>
             coordinates ? weatherApi.reverseGeoCode(coordinates) : null,
         enabled: !!coordinates,

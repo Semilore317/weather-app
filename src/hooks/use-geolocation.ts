@@ -30,8 +30,8 @@ export function useGeolocation() {
             (position) => {
                 setLocationData({
                     coordinates: {
-                        latitude: position.coords.latitude,
-                        longitude: position.coords.longitude,
+                        lat: position.coords.latitude,
+                        lon: position.coords.longitude,
                     },
                     locationError: null,
                     locationLoading: false,

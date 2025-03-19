@@ -1,6 +1,6 @@
 export interface Coordinates {
-    latitude: number;
-    longitude: number;
+    lat: number;
+    lon: number;
 }
 
 export interface WeatherCondition {
@@ -54,8 +54,8 @@ export interface ForecastData {
 export interface GeocodingResponse {
     name: string;
     local_names?: Record<string, string>;
-    latitude: number;
-    longitude: number;
+    lat: number;
+    lon: number;
     country: string;
     state?: string;
 }

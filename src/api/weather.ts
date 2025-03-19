@@ -1,9 +1,9 @@
-import {api_config} from "@/api/config.ts";
-import {Coordinates, WeatherData, ForecastData, GeocodingResponse} from "@/api/types.ts";
+import { api_config } from "@/api/config.ts";
+import { Coordinates, WeatherData, ForecastData, GeocodingResponse } from "@/api/types.ts";
 
 class WeatherApi {
     private createUrl(
-        endpoint:string,
+        endpoint: string,
         params: Record<string, string | number>
     ) {
         const searchParams = new URLSearchParams({
@@ -13,7 +13,7 @@ class WeatherApi {
 
         return `${endpoint}?${searchParams.toString()}`;
     }
-    private async fetchData<T>(url:string): Promise<T> {
+    private async fetchData<T>(url: string): Promise<T> {
         const response = await fetch(url);
 
         if (!response.ok) {
@@ -22,10 +22,10 @@ class WeatherApi {
 
         return response.json();
     }
-    async getCurrentWeather({latitude, longitude}: Coordinates):Promise<WeatherData>{
-        const url = this.createUrl(`${api_config.base_url}/weather`,{
-            latitude: latitude.toString(),
-            longitude: longitude.toString(),
+    async getCurrentWeather({ lat, lon }: Coordinates): Promise<WeatherData> {
+        const url = this.createUrl(`${api_config.base_url}/weather`, {
+            lat: lat.toString(),
+            lon: lon.toString(),
             units: api_config.default_params.units,
         });
 
@@ -33,10 +33,10 @@ class WeatherApi {
 
     }
 
-    async getForecast({latitude, longitude}: Coordinates):Promise<ForecastData>{
-        const url = this.createUrl(`${api_config.base_url}/forecast`,{
-            latitude: latitude.toString(),
-            longitude: longitude.toString(),
+    async getForecast({ lat, lon }: Coordinates): Promise<ForecastData> {
+        const url = this.createUrl(`${api_config.base_url}/forecast`, {
+            lat: lat.toString(),
+            lon: lon.toString(),
             units: api_config.default_params.units,
         });
 
@@ -44,10 +44,10 @@ class WeatherApi {
 
     }
 
-    async reverseGeoCode({latitude, longitude}: Coordinates):Promise<GeocodingResponse[]>{
-        const url = this.createUrl(`${api_config.geo}/reverse`,{
-            latitude: latitude.toString(),
-            longitude: longitude.toString(),
+    async reverseGeoCode({ lat, lon }: Coordinates): Promise<GeocodingResponse[]> {
+        const url = this.createUrl(`${api_config.geo}/reverse`, {
+            lat: lat.toString(),
+            lon: lon.toString(),
             limit: 1,
         });
 

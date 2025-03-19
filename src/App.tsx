@@ -1,8 +1,8 @@
 import { BrowserRouter,Route, Routes } from "react-router-dom";
 import Layout from "./components/Layout";
 import {ThemeProvider} from "./context/theme-provider";
-import WeatherDashboard from "@/pages/weather-dashboard.tsx";
-import {CityPage} from "@/pages/city-page.tsx";
+import WeatherDashboard from "@/pages/weather-dashboard";
+import {CityPage} from "@/pages/city-page";
 import { QueryClientProvider, QueryClient } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 
