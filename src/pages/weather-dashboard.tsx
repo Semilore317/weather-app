@@ -2,30 +2,40 @@ import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button.tsx";
 import { RefreshCw } from "lucide-react";
 import { useGeolocation } from "@/hooks/use-geolocation.tsx";
+import WeatherSkeleton from "@/components/skeleton";
 
 const WeatherDashboard = () => {
+    const { coordinates, locationError, locationLoading, getLocation } = useGeolocation();
+
+    // Log coordinates only after they are updated
+    useEffect(() => {
+        if (!locationLoading && coordinates) {
+            console.log("Coordinates:", coordinates);
+        }
+    }, [coordinates, locationLoading]);
+
     const [isRotating, setIsRotating] = useState(false);
+
 
     const handleRefresh = () => {
         setIsRotating(true);
         setTimeout(() => setIsRotating(false), 500); // Reset animation after 0.5s
         getLocation(); // Fetch location on refresh
+
+        if(coordinates){
+            //reload weather data --unsure
+        }
     };
 
-    // Custom hook for fetching location
-    const { coordinates, error, isLoading, getLocation } = useGeolocation();
+    if (locationLoading) {
+        return <WeatherSkeleton />
+    }
 
-    // Log coordinates only after they are updated
-    useEffect(() => {
-        if (!isLoading && coordinates) {
-            console.log("Coordinates:", coordinates);
-        }
-    }, [coordinates, isLoading]);
 
     return (
         <div>
             {/* Favorite Cities */}
-            <div className="flex items-center justify-between items-center space-y-4">
+            <div className="flex items-center justify-between space-y-4">
                 <h1 className="text-xl font-bold tracking-tight">My Location</h1>
                 <Button onClick={handleRefresh} variant="outline">
                     <RefreshCw
@@ -38,10 +48,10 @@ const WeatherDashboard = () => {
 
             {/* Show location or error */}
             <div>
-                {isLoading ? (
+                {locationLoading ? (
                     <p>Fetching location...</p>
-                ) : error ? (
-                    <p className="text-red-500">{error}</p>
+                ) : locationError ? (
+                    <p className="text-red-500">{locationError}</p>
                 ) : coordinates ? (
                     <p>Latitude: {coordinates.latitude}, Longitude: {coordinates.longitude}</p>
                 ) : null}

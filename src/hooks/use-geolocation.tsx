@@ -3,25 +3,25 @@ import type { Coordinates } from "@/api/types.ts";
 
 interface GeolocationState {
     coordinates: Coordinates | null;
-    error: string | null;
-    isLoading: boolean;
+    locationError: string | null;
+    locationLoading: boolean;
 }
 
 export function useGeolocation() {
     const [locationData, setLocationData] = useState<GeolocationState>({
         coordinates: null,
-        error: null,
-        isLoading: true,
+        locationError: null,
+        locationLoading: true,
     });
 
     const getLocation = () => {
-        setLocationData((prev) => ({ ...prev, isLoading: true, error: null }));
+        setLocationData((prev) => ({ ...prev, locationLoading: true, locationErro: null }));
 
         if (!navigator.geolocation) {
             setLocationData({
                 coordinates: null,
-                error: "Geolocation is not supported by your browser.",
-                isLoading: false,
+                locationError: "Geolocation is not supported by your browser.",
+                locationLoading: false,
             });
             return;
         }
@@ -33,18 +33,18 @@ export function useGeolocation() {
                         latitude: position.coords.latitude,
                         longitude: position.coords.longitude,
                     },
-                    error: null,
-                    isLoading: false,
+                    locationError: null,
+                    locationLoading: false,
                 });
             },
-            (error) => {
+            (locationError) => {
                 let errorMessage: string;
 
-                if (error.code === error.PERMISSION_DENIED) {
+                if (locationError.code === locationError.PERMISSION_DENIED) {
                     errorMessage = "Location permission denied. Please enable location access.";
-                } else if (error.code === error.POSITION_UNAVAILABLE) {
+                } else if (locationError.code === locationError.POSITION_UNAVAILABLE) {
                     errorMessage = "Location information is unavailable.";
-                } else if (error.code === error.TIMEOUT) {
+                } else if (locationError.code === locationError.TIMEOUT) {
                     errorMessage = "Location request timed out.";
                 } else {
                     errorMessage = "An unknown error occurred.";
@@ -52,8 +52,8 @@ export function useGeolocation() {
 
                 setLocationData({
                     coordinates: null,
-                    error: errorMessage,
-                    isLoading: false,
+                    locationError: errorMessage,
+                    locationLoading: false,
                 });
             },{
                 enableHighAccuracy: true,
