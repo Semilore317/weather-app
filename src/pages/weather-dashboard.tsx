@@ -4,29 +4,37 @@ import { MapPin, RefreshCw, AlertCircle } from "lucide-react";
 import { useGeolocation } from "@/hooks/use-geolocation";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import WeatherSkeleton from "@/components/skeleton";
-import { useReverseGeocodeQuery } from "@/hooks/use-weather";
+import { useForeCastQuery, useReverseGeocodeQuery, useWeatherQuery } from "@/hooks/use-weather";
 
 const WeatherDashboard = () => {
     const { coordinates, locationError, locationLoading, getLocation } = useGeolocation();
     const [isRotating, setIsRotating] = useState(false);
 
-    // Log coordinates only after they are updated
     useEffect(() => {
         if (!locationLoading && coordinates) {
             console.log("Coordinates:", coordinates);
         }
     }, [coordinates, locationLoading]);
 
+    //some vars
+    const weatherQuery = useWeatherQuery(coordinates);
+    const forecastQuery = useForeCastQuery(coordinates);
     const locationQuery = useReverseGeocodeQuery(coordinates);
-    console.log(locationQuery);
 
-    const handleRefresh = () => {
+    const handleRefresh = async () => {
         setIsRotating(true);
-        setTimeout(() => setIsRotating(false), 500); // Reset animation after 0.5s
-        getLocation(); // Fetch location on refresh
+        await getLocation();
+        if (coordinates) {
+            await Promise.all([
+                weatherQuery.refetch(),
+                forecastQuery.refetch(),
+                locationQuery.refetch()
+            ]);
+        }
+        setIsRotating(false);
     };
 
-    if (locationLoading) {
+    if (locationLoading || weatherQuery.isLoading || forecastQuery.isLoading) {
         return <WeatherSkeleton />;
     }
 
@@ -46,24 +54,52 @@ const WeatherDashboard = () => {
         );
     }
 
+    if (weatherQuery.error || forecastQuery.error) {
+        return (
+            <Alert variant="destructive">
+                <AlertCircle className="h-4 w-4" />
+                <AlertTitle>Error</AlertTitle>
+                <AlertDescription className="flex flex-col gap-4">
+                    <p>Failed to fetch weather data. Please Retry</p>
+                    <Button onClick={handleRefresh} variant="outline" className="w-fit">
+                        <RefreshCw className="mr-2 h-4 w-4" />
+                        Retry
+                    </Button>
+                </AlertDescription>
+            </Alert>
+        );
+    }
+
+    const locationName = locationQuery.data?.[0];
+
     return (
         <div>
-            {/* Header */}
             <div className="flex items-center justify-between space-y-4">
                 <h1 className="text-xl font-bold tracking-tight">My Location</h1>
-                <Button onClick={handleRefresh} variant="outline">
-                    <RefreshCw className={`w-5 h-5 transition-transform duration-500 ease-in-out ${isRotating ? "rotate-180" : "rotate-0"}`} />
+                <Button 
+                    onClick={handleRefresh} 
+                    variant="outline" 
+                    size="icon" 
+                    disabled={weatherQuery.isFetching || forecastQuery.isFetching}
+                >
+                    <RefreshCw 
+                        className={`w-5 h-5 transition-transform duration-500 ease-in-out 
+                            ${isRotating ? "rotate-180" : "rotate-0"} 
+                            ${weatherQuery.isFetching ? "opacity-50" : ""}`} 
+                    />
                 </Button>
             </div>
 
-            {/* Show location */}
             {coordinates ? (
-                <p>Latitude: {coordinates.lat}, Longitude: {coordinates.lon}</p>
+                <div>
+                    <p>Latitude: {coordinates.lat}, Longitude: {coordinates.lon}</p>
+                    {locationName && <p>Location: {locationName.name}</p>}
+                    {weatherQuery.data && <p>Temperature: {weatherQuery.data.main?.temp}°</p>}
+                    {/* Add more weather data display as needed */}
+                </div>
             ) : (
                 <p>Fetching location...</p>
             )}
-
-            {/* Current and Hourly Weather - Add your weather data here */}
         </div>
     );
 };
