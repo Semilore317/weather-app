@@ -7,7 +7,8 @@ import WeatherSkeleton from "@/components/skeleton";
 import { useForeCastQuery, useReverseGeocodeQuery, useWeatherQuery } from "@/hooks/use-weather";
 import CurrentWeather from "@/components/CurrentWeather";
 import HourlyTemperature from "@/components/HourlyTemperature";
-import WeatherDetails from '../components/WeatherDetails';
+import WeatherDetails from "@/components/WeatherDetails";  // Fixed import path for consistency
+import WeatherForecast from "@/components/WeatherForecast";
 
 const WeatherDashboard = () => {
     const { coordinates, locationError, locationLoading, getLocation } = useGeolocation();
@@ -26,13 +27,16 @@ const WeatherDashboard = () => {
     const handleRefresh = async () => {
         setIsRotating(true);
         await getLocation();
+
+        // Ensure coordinates exist before fetching new data
         if (coordinates) {
-            await Promise.all([
+            await Promise.allSettled([
                 weatherQuery.refetch(),
                 forecastQuery.refetch(),
                 locationQuery.refetch(),
             ]);
         }
+
         setIsRotating(false);
     };
 
@@ -99,10 +103,12 @@ const WeatherDashboard = () => {
 
                     {forecastQuery.data && <HourlyTemperature data={forecastQuery.data} />}
                 </div>
-                <div>
+                <div className="grid gap-6 md:grid-cols-2 items-start ">
                     {/* Details */}
-                    <WeatherDetails data={weatherQuery.data}/>
+                    {weatherQuery.data && <WeatherDetails data={weatherQuery.data} />}
                     {/* Forecast */}
+                    {forecastQuery.data && <WeatherForecast data={forecastQuery.data}/>}
+
                 </div>
             </div>
         </div>
