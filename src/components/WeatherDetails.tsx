@@ -1,6 +1,6 @@
 import type { WeatherData } from '@/api/types';
 import { Compass, Gauge, Sunrise, Sunset } from "lucide-react";
-import { format } from "date-fns"
+import { format } from "date-fns";
 import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
 
 interface WeatherDetailsProps {
@@ -8,18 +8,18 @@ interface WeatherDetailsProps {
 }
 
 const WeatherDetails = ({ data }: WeatherDetailsProps) => {
-
     const formatTime = (timestamp: number) => {
         return format(new Date(timestamp * 1000), "h:mm a");
-    }
+    };
 
     const { wind, main, sys } = data;
 
     const getWindDirection = (degree: number) => {
         const directions = ["N", "NE", "E", "SE", "S", "SW", "W", "NW"];
-        //get a whole number corresponding to each cardinal point
-        const index = Math.round(((degree %= 360 < 0 ? degree + 360 + 360 : degree) / 45) % 8);
-    }
+        // Get a whole number corresponding to each cardinal point
+        const index = Math.round((degree % 360 < 0 ? degree + 360 : degree) / 45) % 8;
+        return directions[index];
+    };
 
     const details = [
         {
@@ -46,8 +46,8 @@ const WeatherDetails = ({ data }: WeatherDetailsProps) => {
             icon: Gauge,
             color: "text-purple-500",
         },
+    ];
 
-    ]
     return (
         <Card>
             <CardHeader>
@@ -55,27 +55,19 @@ const WeatherDetails = ({ data }: WeatherDetailsProps) => {
             </CardHeader>
             <CardContent>
                 <div className='grid gap-6 sm:grid-cols-2'>
-                    {details.map((details) => {
-                        return (
-                            <div key={details.title}
-                                className='flex items-center gap-3 rounded-lg border p-4'
-                            >
-                                <details.icon className={`h-5 w-5 ${details.color}`} />
-                                <div>
-                                    <p className='text-sm font-medium leading-none'>
-                                        {details.title}
-                                    </p>
-                                    <p className='text-sm text-muted-foreground'>
-                                        {details.value}
-                                    </p>
-                                </div>
+                    {details.map((detail) => (
+                        <div key={detail.title} className='flex items-center gap-3 rounded-lg border p-4'>
+                            <detail.icon className={`h-5 w-5 ${detail.color}`} />
+                            <div>
+                                <p className='text-sm font-medium leading-none'>{detail.title}</p>
+                                <p className='text-sm text-muted-foreground'>{detail.value}</p>
                             </div>
-                        )
-                    })}
+                        </div>
+                    ))}
                 </div>
             </CardContent>
         </Card>
+    );
+};
 
-    )
-}
 export default WeatherDetails;

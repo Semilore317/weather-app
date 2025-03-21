@@ -27,7 +27,6 @@ const WeatherForecast = ({ data }: WeatherForecastProps) => {
     const dailyForecast = data.list.reduce((acc, forecast) => {
         const date = format(new Date(forecast.dt * 1000), "yyyy-MM-dd");
 
-        // conditional accumulation
         if (!acc[date]) {
             acc[date] = {
                 temp_min: forecast.main.temp_min,
@@ -39,7 +38,7 @@ const WeatherForecast = ({ data }: WeatherForecastProps) => {
             };
         } else {
             acc[date].temp_min = Math.min(acc[date].temp_min, forecast.main.temp_min);
-            acc[date].temp_max = Math.max(acc[date].temp_max, forecast.main.temp_max); // Fixed temp_max update
+            acc[date].temp_max = Math.max(acc[date].temp_max, forecast.main.temp_max);
         }
 
         return acc;
@@ -57,14 +56,9 @@ const WeatherForecast = ({ data }: WeatherForecastProps) => {
                     {nextDays.map((day) => (
                         <div key={day.date} className="grid grid-cols-3 items-center gap-4 rounded-lg border p-4">
                             <div>
-                                <p className="font-medium">
-                                    {/* once again - who TF came up with this syntax!!! */}
-                                    {format(new Date(day.date * 1000), "EEE, MMM d")}
-                                </p>
+                                <p className="font-medium">{format(new Date(day.date * 1000), "EEE, MMM d")}</p>
                                 <p className="text-muted-foreground capitalize">{day.weather.description}</p>
-
                             </div>
-                            {/* Temperature details */}
                             <div className="flex justify-center gap-4">
                                 <span className="flex items-center text-blue-500">
                                     <ArrowDown className="mr-1 h-4 w-4" />
@@ -75,19 +69,14 @@ const WeatherForecast = ({ data }: WeatherForecastProps) => {
                                     {formatTemp(day.temp_max)}
                                 </span>
                             </div>
-
                             <div className="flex justify-end gap-4">
                                 <span className="flex items-center gap-1">
                                     <Droplets className="h-4 w-4 text-blue-500" />
-                                    <span className="text-sidebar-primary-foreground">
-                                        {day.humidity}%
-                                    </span>
+                                    <span className="text-sidebar-primary-foreground">{day.humidity}%</span>
                                 </span>
                                 <span className="flex items-center gap-1">
                                     <Wind className="h-4 w-4 text-blue-500" />
-                                    <span className="text-sidebar-primary">
-                                        {day.wind}m/s
-                                    </span>
+                                    <span className="text-sidebar-primary">{day.wind}m/s</span>
                                 </span>
                             </div>
                         </div>
