@@ -10,7 +10,7 @@ interface HourlyTemperatureProps {
 const HourlyTemperature = ({ data }: HourlyTemperatureProps) => {
   // Since the data interval is every 3 hours, we need to take the first 8 items
   const chartData = data.list.slice(0, 8).map((item) => ({
-    time: format(new Date(item.dt * 1000), "ha"), // format hour - h, a for am/pm
+    time: format(new Date(item.dt * 1000), "ha"), // format hour - h, a for am/pm, who tf came up with this?
     temp: Math.round(item.main.temp),
     feels_like: Math.round(item.main.feels_like),
   }));
