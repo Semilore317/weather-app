@@ -1,7 +1,7 @@
 import type { ForecastData } from "@/api/types";
 import { format } from "date-fns";
 import { Card, CardContent, CardTitle, CardHeader } from "./ui/card";
-import { ArrowDown, ArrowUp } from "lucide-react";
+import { ArrowDown, ArrowUp, Droplets, Wind } from "lucide-react";
 
 interface WeatherForecastProps {
     data: ForecastData;
@@ -23,7 +23,7 @@ interface DailyForecast {
 
 const WeatherForecast = ({ data }: WeatherForecastProps) => {
     const formatTemp = (temp: number) => `${Math.round(temp)}°`;
-    
+
     const dailyForecast = data.list.reduce((acc, forecast) => {
         const date = format(new Date(forecast.dt * 1000), "yyyy-MM-dd");
 
@@ -56,13 +56,14 @@ const WeatherForecast = ({ data }: WeatherForecastProps) => {
                 <div className="grid gap-4">
                     {nextDays.map((day) => (
                         <div key={day.date} className="grid grid-cols-3 items-center gap-4 rounded-lg border p-4">
-                            <p className="font-medium">
-                                {format(new Date(day.date * 1000), "EEE, MMM d")}
-                            </p> 
-                            {/* once again - who TF came up with this syntax!!! */}
+                            <div>
+                                <p className="font-medium">
+                                    {/* once again - who TF came up with this syntax!!! */}
+                                    {format(new Date(day.date * 1000), "EEE, MMM d")}
+                                </p>
+                                <p className="text-muted-foreground capitalize">{day.weather.description}</p>
 
-                            <p className="text-muted-foreground capitalize">{day.weather.description}</p>
-
+                            </div>
                             {/* Temperature details */}
                             <div className="flex justify-center gap-4">
                                 <span className="flex items-center text-blue-500">
@@ -72,6 +73,21 @@ const WeatherForecast = ({ data }: WeatherForecastProps) => {
                                 <span className="flex items-center text-red-500">
                                     <ArrowUp className="mr-1 h-4 w-4" />
                                     {formatTemp(day.temp_max)}
+                                </span>
+                            </div>
+
+                            <div className="flex justify-end gap-4">
+                                <span className="flex items-center gap-1">
+                                    <Droplets className="h-4 w-4 text-blue-500" />
+                                    <span className="text-sidebar-primary-foreground">
+                                        {day.humidity}%
+                                    </span>
+                                </span>
+                                <span className="flex items-center gap-1">
+                                    <Wind className="h-4 w-4 text-blue-500" />
+                                    <span className="text-sidebar-primary">
+                                        {day.wind}m/s
+                                    </span>
                                 </span>
                             </div>
                         </div>

@@ -22,6 +22,7 @@ export interface WeatherData {
         humidity: number;
     };
     wind:{
+        deg(deg: any): unknown;
         speed: number;
         degree: number;
     };
