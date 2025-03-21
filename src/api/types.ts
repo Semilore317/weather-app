@@ -12,7 +12,8 @@ export interface WeatherCondition {
 
 export interface WeatherData {
     coord: Coordinates;
-    weather: WeatherCondition[];
+    //weather: WeatherCondition[];
+    weather: any;
     main: {
         temp: number;
         feels_like: number;

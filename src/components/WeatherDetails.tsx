@@ -14,11 +14,13 @@ const WeatherDetails = ({ data }: WeatherDetailsProps) => {
 
     const { wind, main, sys } = data;
 
-    const getWindDirection = (degree: number) => {
+    //for some reason is giving issues in vercel deployment
+    {/* 
+        const getWindDirection = (degree: number) => {
         const directions = ["N", "NE", "E", "SE", "S", "SW", "W", "NW"];
         const index = Math.round((degree % 360) / 45) % 8;  // Fixed calculation
         return directions[index];
-    };
+    }; */}
 
     const details = [
         {
@@ -35,7 +37,8 @@ const WeatherDetails = ({ data }: WeatherDetailsProps) => {
         },
         {
             title: "Wind Direction",
-            value: `${getWindDirection(wind.deg)} (${wind.deg}°)`,  // Now returns a proper string
+            //value: `${getWindDirection(wind.deg)} (${wind.deg}°)`,  // Now returns a proper string
+            value: `${wind.deg}`,
             icon: Compass,
             color: "text-green-500",
         },
