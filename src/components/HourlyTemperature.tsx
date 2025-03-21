@@ -2,7 +2,7 @@ import type { ForecastData } from '@/api/types';
 import { Card, CardHeader, CardTitle, CardContent } from './ui/card';
 import { ResponsiveContainer, LineChart, Line, XAxis, YAxis, Tooltip } from "recharts";
 import { format } from "date-fns";
-
+//
 interface HourlyTemperatureProps {
   data: ForecastData;
 }
