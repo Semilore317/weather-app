@@ -38,7 +38,7 @@ const WeatherDetails = ({ data }: WeatherDetailsProps) => {
         {
             title: "Wind Direction",
             //value: `${getWindDirection(wind.deg)} (${wind.deg}°)`,  // Now returns a proper string
-            value: `${wind.deg}`,
+            value: `${wind.deg}m/s`,
             icon: Compass,
             color: "text-green-500",
         },
