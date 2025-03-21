@@ -25,8 +25,8 @@ const HourlyTemperature = ({ data }: HourlyTemperatureProps) => {
           <ResponsiveContainer width="100%" height="100%">
             <LineChart
               data={chartData}
-              animationDuration={1000}  // Smooth animation over 1 second
-              animationEasing="ease-in-out"  // Easing function for animation
+              //animationDuration= {1000}  // Smooth animation over 1 second
+              //animationEasing="ease-in-out"  // Easing function for animation
             >
               {/* XAxis for time */}
               <XAxis
