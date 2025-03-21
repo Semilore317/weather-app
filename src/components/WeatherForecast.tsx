@@ -33,7 +33,7 @@ const WeatherForecast = ({ data }: WeatherForecastProps) => {
                 temp_max: forecast.main.temp_max,
                 humidity: forecast.main.humidity,
                 wind: forecast.wind.speed,
-                weather: forecast.weather[0],
+                weather: forecast.weather[0] || { id: 0, main: "Clear", description: "Clear sky", icon: "01d" },  // Ensures `main` exists
                 date: forecast.dt,
             };
         } else {

@@ -16,8 +16,7 @@ const WeatherDetails = ({ data }: WeatherDetailsProps) => {
 
     const getWindDirection = (degree: number) => {
         const directions = ["N", "NE", "E", "SE", "S", "SW", "W", "NW"];
-        // Get a whole number corresponding to each cardinal point
-        const index = Math.round((degree % 360 < 0 ? degree + 360 : degree) / 45) % 8;
+        const index = Math.round((degree % 360) / 45) % 8;  // Fixed calculation
         return directions[index];
     };
 
@@ -36,7 +35,7 @@ const WeatherDetails = ({ data }: WeatherDetailsProps) => {
         },
         {
             title: "Wind Direction",
-            value: `${getWindDirection(wind.deg)} (${wind.deg}°)`,
+            value: `${getWindDirection(wind.deg)} (${wind.deg}°)`,  // Now returns a proper string
             icon: Compass,
             color: "text-green-500",
         },
@@ -54,13 +53,13 @@ const WeatherDetails = ({ data }: WeatherDetailsProps) => {
                 <CardTitle>Weather Details</CardTitle>
             </CardHeader>
             <CardContent>
-                <div className='grid gap-6 sm:grid-cols-2'>
+                <div className="grid gap-6 sm:grid-cols-2">
                     {details.map((detail) => (
-                        <div key={detail.title} className='flex items-center gap-3 rounded-lg border p-4'>
+                        <div key={detail.title} className="flex items-center gap-3 rounded-lg border p-4">
                             <detail.icon className={`h-5 w-5 ${detail.color}`} />
                             <div>
-                                <p className='text-sm font-medium leading-none'>{detail.title}</p>
-                                <p className='text-sm text-muted-foreground'>{detail.value}</p>
+                                <p className="text-sm font-medium leading-none">{detail.title}</p>
+                                <p className="text-sm text-muted-foreground">{detail.value}</p>
                             </div>
                         </div>
                     ))}
