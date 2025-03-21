@@ -7,6 +7,7 @@ import WeatherSkeleton from "@/components/skeleton";
 import { useForeCastQuery, useReverseGeocodeQuery, useWeatherQuery } from "@/hooks/use-weather";
 import CurrentWeather from "@/components/CurrentWeather";
 import HourlyTemperature from "@/components/HourlyTemperature";
+import WeatherDetails from '../components/WeatherDetails';
 
 const WeatherDashboard = () => {
     const { coordinates, locationError, locationLoading, getLocation } = useGeolocation();
@@ -100,6 +101,7 @@ const WeatherDashboard = () => {
                 </div>
                 <div>
                     {/* Details */}
+                    <WeatherDetails data={weatherQuery.data}/>
                     {/* Forecast */}
                 </div>
             </div>
