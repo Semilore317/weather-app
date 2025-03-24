@@ -5,6 +5,7 @@ import WeatherDashboard from "@/pages/weather-dashboard";
 import {CityPage} from "@/pages/city-page";
 import { QueryClientProvider, QueryClient } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
+import { Toaster } from "sonner";
 
 //tanstack stuff
 //set a limit for "fresh" data to avoid excess api calls
@@ -30,6 +31,7 @@ const App = () => {
                             <Route path="/city/:cityName" element={<CityPage />} />
                         </Routes>
                     </Layout>
+                    <Toaster richColors/>
                 </ThemeProvider>
             </BrowserRouter>
             <ReactQueryDevtools initialIsOpen={false} />

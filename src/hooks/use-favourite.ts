@@ -33,7 +33,7 @@ export function useFavourite() {
         ) => {
             const newFavourite: FavouriteCity = {
                 ...city,
-                id: `${city.lat}-${city.lon}-${Date.now()}`,
+                id: `${city.lat}-${city.lon}`,
                 addedAt: Date.now(),
             };
 
@@ -74,5 +74,7 @@ export function useFavourite() {
         favourites: favouriteQuery.data ?? [],
         addToFavourites,
         removeFavourite,
+        isFavorite: (lat: number, lon: number) =>
+            favourites.some((city) => city.lat === lat && city.lon === lon),
     };
 }

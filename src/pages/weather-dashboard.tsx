@@ -9,6 +9,7 @@ import CurrentWeather from "@/components/CurrentWeather";
 import HourlyTemperature from "@/components/HourlyTemperature";
 import WeatherDetails from "@/components/WeatherDetails";  // Fixed import path for consistency
 import WeatherForecast from "@/components/WeatherForecast";
+import FavouriteCities from "@/components/FavouriteCities";
 
 const WeatherDashboard = () => {
     const { coordinates, locationError, locationLoading, getLocation } = useGeolocation();
@@ -80,6 +81,8 @@ const WeatherDashboard = () => {
 
     return (
         <div>
+            {/* Favourite Cities */}
+            <FavouriteCities />
             <div className="flex items-center justify-between space-y-4">
                 <h1 className="text-xl font-bold tracking-tight">Weather Dashboard</h1>
                 <Button

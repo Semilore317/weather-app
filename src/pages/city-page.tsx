@@ -7,6 +7,7 @@ import CurrentWeather from "@/components/CurrentWeather";
 import HourlyTemperature from "@/components/HourlyTemperature";
 import WeatherDetails from "@/components/WeatherDetails";
 import WeatherForecast from "@/components/WeatherForecast";
+import FavouriteButton from "@/components/FavouriteButton";
 
 export const CityPage = () => {
     const [searchParams] = useSearchParams();
@@ -68,16 +69,18 @@ export const CityPage = () => {
             {/* Display location name above everything */}
             {weatherQuery.data && (
                 <>
-                    <div className="flex items-baseline gap-1">
-                        <h1 className="text-3xl font-bold tracking-tight">
-                            {weatherQuery.data.name}
-                        </h1>
-                        <p className="text-sm text-muted-foreground">
-                            , {weatherQuery.data.sys.country}
-                        </p>
-                    </div>
-                    <div>
-                        {/* Favorite Button */}
+                    <div className="flex justify-between items-center">
+                        <div className="flex items-baseline gap-1">
+                            <h1 className="text-3xl font-bold tracking-tight">
+                                {weatherQuery.data.name}
+                            </h1>
+                            <p className="text-sm text-muted-foreground">
+                                , {weatherQuery.data.sys.country}
+                            </p>
+                        </div>
+                        <div>
+                            <FavouriteButton data={{ ...weatherQuery.data, name: params.cityName }} />
+                        </div>
                     </div>
 
                 </>
