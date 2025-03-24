@@ -103,4 +103,4 @@ const WeatherForecast = ({ data }: WeatherForecastProps) => {
     );
 };
 
-export default WeatherForecast;
+export default WeatherForecast;  

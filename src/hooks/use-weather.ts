@@ -6,6 +6,7 @@ export const weather_keys = {
     weather: (coordinates: Coordinates) => ["weather", coordinates] as const,
     forecast: (coordinates: Coordinates) => ["forecast", coordinates] as const,
     reverseGeocode: (coordinates: Coordinates) => ["reverseGeocode", coordinates] as const, //location
+    search: (query: string) => ["location-search", query] as const,
 } as const;
 
 export function useWeatherQuery(coordinates: Coordinates | null) {
@@ -44,5 +45,16 @@ export function useReverseGeocodeQuery(coordinates: Coordinates | null) {
             coordinates ? weatherApi.reverseGeoCode(coordinates) : null,
         enabled: !!coordinates,
 
+    });
+}
+
+export function useLocationSearch(query: string) {
+    return useQuery({
+        //tanstack stuff
+        // if the weather data for a location has been fetched within the last x minutes
+        // there shouldn't be a new api call for that location
+        queryKey: weather_keys.search(query),
+        queryFn: () => weatherApi.searchLocations(query),
+        enabled: query.length >= 3,
     });
 }
