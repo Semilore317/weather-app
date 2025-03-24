@@ -59,7 +59,7 @@ export const CityPage = () => {
     }
 
     // Skeleton loader while fetching data
-    if (weatherQuery.isLoading || forecastQuery.isLoading) {
+    if (weatherQuery.isLoading || forecastQuery.isLoading || !params.cityName) {
         return <WeatherSkeleton />;
     }
 
@@ -75,6 +75,9 @@ export const CityPage = () => {
                         <p className="text-sm text-muted-foreground">
                             , {weatherQuery.data.sys.country}
                         </p>
+                    </div>
+                    <div>
+                        {/* Favorite Button */}
                     </div>
 
                 </>
